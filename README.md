@@ -11,7 +11,7 @@ You can run Access Controller on any device that has access to your Home Assista
 git clone https://github.com/iangcarroll/access-controller && cd access-controller
 
 # Run the server
-go run ./cmd/server -entity lock.abc_lock_mechanism -token abc.def.xyz -base-url http://homeassistant.local:8123
+go run ./cmd/server -allowed-users 3000 -entity lock.abc_lock_mechanism -token abc.def.xyz -base-url http://homeassistant.local:8123
 ```
 
 ## Supported Devices
@@ -23,7 +23,7 @@ Any IDEMIA reader that supports remote IP messages should work, including the SI
 Any Home Assistant-paired lock that can be unlocked in Home Assistant can be controlled by Access Controller.
 
 ## Configuring your IDEMIA reader
-You will need to enroll permitted users directly on the IDEMIA device. Access Controller only receives the user ID after authentication is successfully completed.
+You will need to enroll permitted users directly on the IDEMIA device and then pass them to `allowed-users`.
 
 1. Upgrade your IDEMIA device to the latest firmware and consider resetting it to factory defaults.
 2. Using MorphoBioToolBox (MBTB), go to Tools and select `Enable On-demand Security`. Enforced Security is not currently supported.
@@ -34,4 +34,4 @@ You will need to enroll permitted users directly on the IDEMIA device. Access Co
 ## Security Considerations
 Don't expose Access Controller to the internet, as it could receive spoofed messages from a rogue device. An attacker could also remove your IDEMIA reader externally and connect themselves to your network. Access Controller will only open your smart lock if the user ID is successfully recognized, so you should ensure your user IDs are not easily predicted. You can consider adding additional protections, such as detecting tamper events from the IDEMIA reader or the presence of rogue devices on your network.
 
-Access Controller does not currently support Enforced Security. However, Enforced Security would allow you to validate the client sending messages to the controller.
+Access Controller does not currently support Enforced Security. However, Enforced Security would allow you to validate the client sending messages.
